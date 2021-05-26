@@ -71,4 +71,19 @@ app.put('/:id', (req, res) => {
     })
 })
 
+app.delete('/:id', (req, res) => {
+    let posicion = facturas.findIndex(elem => {
+        return elem.id === req.params.id;
+    })
+    if (posicion < 0) {
+        return res.status(404).json({
+            message: 'La factura no existe'
+        })
+    }
+    facturas.splice(posicion, 1);
+    res.status(200).json({
+        message: `La factura ha sido eliminada`
+    })
+})
+
 module.exports = app;
