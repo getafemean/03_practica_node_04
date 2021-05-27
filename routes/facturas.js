@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const uuid = require('uuid');
+const logs = require('../middleware/logs');
 
 let facturas = [];
 
@@ -24,7 +25,12 @@ app.get('/:id', (req, res) => {
     })
 })
 
-app.post('/', (req, res) => {
+app.post('/', logs.createLog ,(req, res) => {
+    if(req.body.baseImponible === 0) {
+        return res.status(403).json({
+            message: 'La factura no puede tener 0 euros'
+        })
+    }
     let factura = req.body;
     factura.id = uuid.v4();
     facturas.push(factura);
